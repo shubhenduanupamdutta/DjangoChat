@@ -1,6 +1,32 @@
 {{ chat_room.name }}
 
+
 <form action="" method="post">
   <input type="text" name="message" id="message" />
   <button type="submit">Send</button>
 </form>
+
+{{ chat_room.slug|json_script:"chat_room_name" }}
+
+<script>
+  const chatRoomName = JSON.parse(document.getElementById('chat_room_name').textContent);
+  // console.log(chatRoomName)
+  const chatSocket = new WebSocket(
+    'ws://'
+    + window.location.host
+    + '/ws/'
+    + chatRoomName
+    + '/'
+  )
+  chatSocket.onmessage = function(e) {
+    console.log("This is a message.");
+    // const data = JSON.parse(e.data);
+    // document.querySelector('#chat-log').value += (data.message + '\n');
+  }
+
+  chatSocket.onclose = function(e) {
+    console.log("Socket Closed")
+    // console.error('Chat socket closed unexpectedly');
+  }
+
+</script>
