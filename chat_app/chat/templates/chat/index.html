@@ -1,6 +1,6 @@
-<h1> List of chat rooms </h1>
+<h1>List of chat rooms</h1>
 
 {% for chat_room in chat_rooms %}
-<a href="#"> {{ chat_room.name }} </a>
-<br>
+<a href="{% url 'chat_room' chat_room.slug %}"> {{ chat_room.name }} </a>
+<br />
 {% endfor %}
