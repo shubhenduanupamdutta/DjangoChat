@@ -1,15 +1,16 @@
 {{ chat_room.name }}
 
-
 <form action="" method="post">
   <input type="text" name="message" id="message" />
-  <button type="submit">Send</button>
+  <button id="sendButton" type="submit">Send</button>
 </form>
 
 {{ chat_room.slug|json_script:"chat_room_name" }}
+{{ request.user.username|json_script:"current_username" }}
 
 <script>
   const chatRoomName = JSON.parse(document.getElementById('chat_room_name').textContent);
+  const userName = JSON.parse(document.getElementById('current_username').textContent);
   // console.log(chatRoomName)
   const chatSocket = new WebSocket(
     'ws://'
@@ -18,15 +19,24 @@
     + chatRoomName
     + '/'
   )
-  chatSocket.onmessage = function(e) {
+  chatSocket.onmessage = function (e) {
     console.log("This is a message.");
-    // const data = JSON.parse(e.data);
-    // document.querySelector('#chat-log').value += (data.message + '\n');
   }
 
-  chatSocket.onclose = function(e) {
+  chatSocket.onclose = function (e) {
     console.log("Socket Closed")
-    // console.error('Chat socket closed unexpectedly');
   }
+
+  document.getElementById('sendButton').onclick = function (e) {
+    e.preventDefault();
+    const messageInput = document.getElementById('message');
+    const message = messageInput.value;
+    chatSocket.send(JSON.stringify({
+      'message': message,
+      'username': userName,
+      'room': chatRoomName,
+    }));
+    messageInput.value = '';
+  };
 
 </script>
