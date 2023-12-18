@@ -1,15 +1,39 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {% block head %}
-    <title>Chat App</title>
-    {% endblock head %}
-    <script src="https://cdn.tailwindcss.com"></script>
-    {% block style %} {% endblock style%}
-  </head>
-  <body>
-    {% block body %} {% endblock body %} {% block script %} {% endblock script %}
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {% block head %}
+  <title>Chat App</title>
+  {% endblock head %}
+  <link rel="stylesheet" href="{% static 'chat/styles.css' %}" type="text/css" />
+  {% block style %} {% endblock style%}
+</head>
+
+<body>
+  <nav class="shadow-lg p-3">
+    <div class="container flex justify-between mx-auto">
+      <a href="{% url 'index' %}" class="flex items-center">
+        <img src="https://cdn2.iconfinder.com/data/icons/whcompare-isometric-web-hosting-servers/50/email-laptop-512.png"
+             alt="Logo" class="h-16 mr-3" />
+        <span class="self-center text-4xl font-semibold">Chats App</span>
+      </a>
+      <div class="ml-4 w-auto block">
+        <ul class="flex flex-column p-4 mt-4 space-x-3 border rounded-lg border-gray-100 bg-blue-100">
+          <li>
+            <a class="block py-2 px-3 rounded bg-blue-700 text-white" href="">Rooms</a>
+          </li>
+          <li>
+            <a class="block py-2 px-3 rounded">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  {% block body %} {% endblock body %} {% block script %} {% endblock script %}
+</body>
+
 </html>
