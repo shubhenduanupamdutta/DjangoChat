@@ -1,7 +1,9 @@
 {{ chat_room.name }}
 
 <div id="chat-log">
-
+  {% for message in messages %}
+    {{ message.user.username }}: {{ message.message_content }}<br>
+  {% endfor %}
 </div>
 
 <form action="" method="post">
