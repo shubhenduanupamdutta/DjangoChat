@@ -1,8 +1,14 @@
+{% extends 'chat/base.html' %}
+{% load static %}
+
+<!-- Body starts here -->
+{% block body %}
+
 {{ chat_room.name }}
 
 <div id="chat-log">
   {% for message in messages %}
-    {{ message.user.username }}: {{ message.message_content }}<br>
+  {{ message.user.username }}: {{ message.message_content }}<br>
   {% endfor %}
 </div>
 
@@ -15,6 +21,11 @@
 {{ chat_room.slug|json_script:"chat_room_name" }}
 {{ request.user.username|json_script:"current_username" }}
 
+<!-- Body ends here -->
+{% endblock body %}
+
+
+{% block script %}
 <script>
   const chatRoomName = JSON.parse(document.getElementById('chat_room_name').textContent);
   const userName = JSON.parse(document.getElementById('current_username').textContent);
@@ -57,3 +68,5 @@
   };
 
 </script>
+
+{% endblock script %}
