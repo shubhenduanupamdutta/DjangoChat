@@ -3,20 +3,36 @@
 
 <!-- Body starts here -->
 {% block body %}
-
-{{ chat_room.name }}
-
-<div id="chat-log">
-  {% for message in messages %}
-  {{ message.user.username }}: {{ message.message_content }}<br>
-  {% endfor %}
+<div class="mt-10 mb-5 mx-10 text-2xl font-semibold">
+  {{ chat_room.name }}
 </div>
 
-<form action="" method="post">
-  {% csrf_token %}
-  <input type="text" name="message" id="message" />
-  <button id="sendButton" type="submit">Send</button>
-</form>
+<div id="messageContainer" class="message container mx-10 my-20 overflow-auto h-120">
+  <div id="chat-log">
+    {% for message in messages %}
+    <div class="message shadow-lg p-3 rounded-lg w-1/2 m-3 bg-blue-300">
+      <div class="text-gray-500 text-sm">
+        {{ message.user.username }}
+      </div>
+      {{ message.message_content }}
+      <div class="text-gray-500 text-sm">
+        {{ message.date }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+<div class="form-container fixed inset-x-0 bottom-0 p-4 bg-blue-900 rounded-lg">
+  <form action="" method="post">
+    {% csrf_token %}
+    <input class="rounded-md px-2 ml-10" type="text" name="message" id="message" />
+    <button class="text-white ml-4 py-1 px-3 rounded-md bg-blue-500" id="sendButton" type="submit">Send</button>
+  </form>
+</div>
+
+
 
 {{ chat_room.slug|json_script:"chat_room_name" }}
 {{ request.user.username|json_script:"current_username" }}
@@ -40,13 +56,23 @@
   chatSocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
     if (data.message) {
-      console.log('Received message to client is: ', data.message)
-      let html = data.username + ': ' + data.message + '<br>'
+      // console.log('Received message to client is: ', data.message)
+
+      let html = `<div class="message shadow-lg p-3 rounded-lg w-1/2 m-3 bg-blue-300">
+    <div class="text-gray-500 text-sm">
+      ${data.username}
+    </div>
+    ${data.message}
+    <div class="text-gray-500 text-sm">
+      Now
+    </div>
+  </div>`
       document.getElementById('chat-log').innerHTML += html
 
     } else {
       alert('The message was empty');
     }
+    scroll();
     // console.log(data)
     // document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
   }
@@ -67,6 +93,10 @@
     messageInput.value = '';
   };
 
+  function scroll () {
+    const mContainer = document.getElementById('messageContainer');
+    mContainer.scrollTop = mContainer.scrollHeight;
+  }
 </script>
 
 {% endblock script %}
