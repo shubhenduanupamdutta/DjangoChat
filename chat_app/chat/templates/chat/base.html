@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block head %}
+    <title>Chat App</title>
+    {% endblock head %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% block style %} {% endblock style%}
+  </head>
+  <body>
+    {% block body %} {% endblock body %} {% block script %} {% endblock script %}
+  </body>
+</html>
